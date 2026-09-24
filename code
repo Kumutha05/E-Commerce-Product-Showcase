@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>E-Commerce Product Showcase</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background: #f9f9f9;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+
+    header {
+      background: #0d6efd;
+      color: white;
+      text-align: center;
+      padding: 1.5rem 0;
+      font-size: 1.6rem;
+      letter-spacing: 1px;
+      font-weight: 600;
+    }
+
+    .filter-buttons {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .filter-buttons button {
+      padding: 10px 20px;
+      border: none;
+      background: #e0e0e0;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 15px;
+    }
+
+    .filter-buttons button.active,
+    .filter-buttons button:hover {
+      background: #0d6efd;
+      color: white;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      padding: 20px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .product-card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      padding: 15px;
+      transition: 0.3s;
+      cursor: pointer;
+    }
+
+    .product-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .product-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    .product-card h3 {
+      margin: 10px 0 5px;
+      font-size: 1.1rem;
+    }
+
+    .product-card p {
+      font-size: 14px;
+      color: #666;
+    }
+
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 10;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.6);
+    }
+
+    .modal-content {
+      background-color: #fff;
+      margin: 10% auto;
+      padding: 20px;
+      border-radius: 15px;
+      width: 90%;
+      max-width: 600px;
+      text-align: center;
+      position: relative;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .modal-content img {
+      width: 100%;
+      border-radius: 10px;
+      margin-bottom: 15px;
+    }
+
+    .close {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      font-size: 24px;
+      cursor: pointer;
+      color: #333;
+    }
+
+    .buy-btn {
+      background: #25d366;
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      font-size: 16px;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: background 0.3s;
+      margin-top: 10px;
+      display: inline-block;
+    }
+
+    .buy-btn:hover {
+      background: #1da851;
+    }
+
+    footer {
+      text-align: center;
+      padding: 15px;
+      background: #0d6efd;
+      color: white;
+      margin-top: 30px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>The StyleHub🛍️</header>
+
+  <div class="filter-buttons">
+    <button class="active" data-filter="all">All</button>
+    <button data-filter="clothing">Clothing</button>
+    <button data-filter="electronics">Electronics</button>
+    <button data-filter="accessories">Accessories</button>
+  </div>
+
+  <div class="product-grid">
+    <div class="product-card" data-category="clothing">
+      <img src="C:\Users\kumut\OneDrive\Desktop\project\src\T-shirt.webp" alt="T-shirt">
+      <h3>Casual T-Shirt</h3>
+      <p>Comfortable Stylish wear</p>
+    </div>
+
+    <div class="product-card" data-category="electronics">
+      <img src="C:\Users\kumut\OneDrive\Desktop\project\src\Wireless-Headphone.webp" alt="Headphones">
+      <h3>Wireless Headphones</h3>
+      <p>High quality sound</p>
+    </div>
+
+    <div class="product-card" data-category="accessories">
+      <img src="C:\Users\kumut\OneDrive\Desktop\project\src\watch.webp" alt="Watch">
+      <h3>Stylish Watch</h3>
+      <p>Elegant design for all</p>
+    </div>
+
+    <div class="product-card" data-category="clothing">
+      <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f" alt="Jacket">
+      <h3>Leather Jacket</h3>
+      <p>Trendy winter wear</p>
+    </div>
+
+    <div class="product-card" data-category="electronics">
+      <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8" alt="Laptop">
+      <h3>Smart Laptop</h3>
+      <p>Perfect for professionals</p>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div id="productModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <img id="modalImg" src="" alt="Product">
+      <h3 id="modalTitle"></h3>
+      <p id="modalDesc"></p>
+      <a id="buyLink" target="_blank">
+        <button class="buy-btn">💬 Buy Now on WhatsApp</button>
+      </a>
+    </div>
+  </div>
+
+  <footer>© 2025 Small Business Showcase | Designed with ❤️</footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script>
+    // Filtering
+    const filterButtons = document.querySelectorAll('.filter-buttons button');
+    const productCards = document.querySelectorAll('.product-card');
+
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelector('.filter-buttons .active').classList.remove('active');
+        btn.classList.add('active');
+
+        const filter = btn.dataset.filter;
+        productCards.forEach(card => {
+          if (filter === 'all' || card.dataset.category === filter) {
+            card.style.display = 'block';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+
+    //modal logic
+    const modal = document.getElementById('productModal');
+    const modalImg = document.getElementById('modalImg');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalDesc = document.getElementById('modalDesc');
+    const buyLink = document.getElementById('buyLink');
+    const closeBtn = document.querySelector('.close');
+
+    const whatsappNumber = "919876543210"; // 🔹 Replace with your WhatsApp number (without +)
+
+    productCards.forEach(card => {
+      card.addEventListener('click', () => {
+        modal.style.display = 'block';
+        const productName = card.querySelector('h3').textContent;
+        const productDesc = card.querySelector('p').textContent;
+
+        modalImg.src = card.querySelector('img').src;
+        modalTitle.textContent = productName;
+        modalDesc.textContent = productDesc;
+
+        const message = `Hello! I'm interested in buying: ${productName}. Please share details.`;
+        buyLink.href = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+      });
+    });
+
+    closeBtn.addEventListener('click', () => {
+      modal.style.display = 'none';
+    });
+
+    window.addEventListener('click', (e) => {
+      if (e.target === modal) modal.style.display = 'none';
+    });
+  </script>
+</body>
+</html>
